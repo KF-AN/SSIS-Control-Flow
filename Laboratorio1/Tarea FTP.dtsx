@@ -1,0 +1,171 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="12/5/2023 3:46:51 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LTP0205"
+  DTS:CreatorName="ANAVICOLA\KFlamarique"
+  DTS:DTSID="{D29A3C1E-CB59-4F1E-8115-AABC10C0CC9D}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5396.0"
+  DTS:LocaleID="3082"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{D9220781-9CE4-4EDC-B7FB-8419A337E8F6}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Administrador de conexiones FTP]"
+      DTS:CreationName="FTP"
+      DTS:DTSID="{CC36AD36-AC14-4E6E-A70C-DC7615365A57}"
+      DTS:ObjectName="Administrador de conexiones FTP">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="66.220.9.50:21">
+          <DTS:FtpConnection
+            DTS:ServerName="66.220.9.50"
+            DTS:ServerUserName="kleys"
+            DTS:UsePassiveMode="False">
+            <DTS:Property
+              DTS:Name="ServerPassword"
+              Sensitive="1"
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAF+9Ko6pMuEuGW6VygPg3ogAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAJGbSjqlWgsG2SCo1jrju0AAAAAASAAACgAAAAEAAAANHAzHUDofoN294sA7ktjaYgAAAAQu0a5n9mtYk7UGIrtzZmzPm9rL2DFT2i556CFjLrRuEUAAAAbxNj3KSndQqnaJtdvVhJD09XfIQ</DTS:Property>
+          </DTS:FtpConnection>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Streaming Data.csv]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{9D7B7EF7-7ACF-450D-8B8C-D173816CD62B}"
+      DTS:ObjectName="Streaming Data.csv">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="C:\Users\kflamarique\Documents\Kleys\AN\CursoSSIS\TareaFTP\Streaming Data.csv" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[TareaFTP]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{605D1B27-77E6-4333-BED1-737B8FD81B96}"
+      DTS:ObjectName="TareaFTP">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:FileUsageType="2"
+          DTS:ConnectionString="C:\Users\kflamarique\Documents\Kleys\AN\CursoSSIS\TareaFTP" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Descargar archivo TXT"
+      DTS:CreationName="Microsoft.FtpTask"
+      DTS:Description="Tarea FTP"
+      DTS:DTSID="{0C4B814A-6746-4AE6-95AC-003CA7DA7F32}"
+      DTS:ExecutableType="Microsoft.FtpTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Descargar archivo TXT"
+      DTS:TaskContact="FTP Task; Microsoft Corporation; SQL Server 2022; (c) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <FtpData
+          ConnectionName="{CC36AD36-AC14-4E6E-A70C-DC7615365A57}"
+          TaskOperationType="Receive"
+          TaskLocalPath="TareaFTP"
+          TaskRemotePath="/My Documents/SampleText.txt"
+          TaskOverwriteDest="True" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Enviar Archivo CSV"
+      DTS:CreationName="Microsoft.FtpTask"
+      DTS:Description="Tarea FTP"
+      DTS:DTSID="{9F3290BD-1D8B-42A5-9C3E-62E121EAED3C}"
+      DTS:ExecutableType="Microsoft.FtpTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Enviar Archivo CSV"
+      DTS:TaskContact="FTP Task; Microsoft Corporation; SQL Server 2022; (c) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <FtpData
+          ConnectionName="{CC36AD36-AC14-4E6E-A70C-DC7615365A57}"
+          TaskLocalPath="Streaming Data.csv"
+          TaskRemotePath="/My Documents"
+          TaskOverwriteDest="True" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción]"
+      DTS:CreationName=""
+      DTS:DTSID="{DC28260B-1911-4943-AB5B-1BD01C52AFD8}"
+      DTS:From="Package\Enviar Archivo CSV"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción"
+      DTS:To="Package\Descargar archivo TXT" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--Esta sección CDATA contiene la información de diseño del paquete. Esta sección incluye información como, por ejemplo, las coordenadas (x,y), el ancho y el alto.-->
+<!--Si edita manualmente esta sección y comete un error, puede eliminarlo. -->
+<!--El paquete podrá cargarse normalmente, pero se perderá la información de diseño anterior y el diseñador reorganizará los elementos automáticamente en la superficie de diseño.-->
+<Objects
+  Version="8">
+  <!--Cada uno de los nodos siguientes contiene propiedades que no afectan al comportamiento en tiempo de ejecución.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="168,42"
+          Id="Package\Enviar Archivo CSV"
+          TopLeft="5.5,5.5" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\Descargar archivo TXT"
+          TopLeft="35.5,103.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción]"
+          TopLeft="89.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="38.5,56"
+              Start="0,0"
+              End="38.5,48.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,24"
+                    Point2="0,28"
+                    Point3="4,28" />
+                  <mssgle:LineSegment
+                    End="34.5,28" />
+                  <mssgle:CubicBezierSegment
+                    Point1="34.5,28"
+                    Point2="38.5,28"
+                    Point3="38.5,32" />
+                  <mssgle:LineSegment
+                    End="38.5,48.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
